@@ -1,0 +1,57 @@
+﻿using HarmonyLib;
+using Unity.Netcode;
+using UnityEngine;
+
+namespace RandomEnemiesSize.Patches
+{
+    [HarmonyPatch(typeof(Landmine))]
+    public class PatchLandmineSize
+    {
+        [HarmonyPatch("Start")]
+        [HarmonyPostfix]
+        private static void PatchStart(Landmine __instance)
+        {
+            if (!__instance.IsServer || !__instance.IsOwner) return;
+
+            if (!RandomEnemiesSize.instance.customAffectMineEntry.Value) return;
+
+            //RANDOM PERCENT
+            var randomPercent = Random.Range(0f, 100f);
+
+            if (RandomEnemiesSize.instance.randomPercentChanceEntry.Value < randomPercent)
+            {
+                if (RandomEnemiesSize.instance.devLogEntry.Value)
+                    Debug.Log(
+                        $"RANDOM PERCENT NOT RANDOM SIZE : {randomPercent} FOR ENEMY {__instance.gameObject.name}");
+                return;
+            }
+
+            var scale = Random.Range(RandomEnemiesSize.instance.minSizeMineEntry.Value,
+                RandomEnemiesSize.instance.maxSizeMineEntry.Value);
+
+            var networkObject = __instance.gameObject.GetComponentInParent<NetworkObject>();
+
+            var originalScale = networkObject.transform.localScale;
+            var newScale = originalScale * scale;
+
+            if (RandomEnemiesSize.instance.funModeEntry.Value)
+            {
+                var funXSize = Random.Range(RandomEnemiesSize.instance.funModeHorizontalMinEntry.Value,
+                    RandomEnemiesSize.instance.funModeHorizontalMaxEntry.Value);
+                var funZSize = Random.Range(RandomEnemiesSize.instance.funModeHorizontalMinEntry.Value,
+                    RandomEnemiesSize.instance.funModeHorizontalMaxEntry.Value);
+
+                if (RandomEnemiesSize.instance.funModeLockHorizontalEnrty.Value) funZSize = funXSize;
+
+                newScale = new Vector3(newScale.x * funXSize, newScale.y, newScale.z * funZSize);
+            }
+
+            __instance.NetworkObject.SynchronizeTransform = true;
+            __instance.gameObject.transform.parent.localScale = newScale;
+            __instance.NetworkObject.Despawn(false);
+            //change size
+
+            __instance.NetworkObject.Spawn();
+        }
+    }
+}
