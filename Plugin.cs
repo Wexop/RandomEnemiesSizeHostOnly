@@ -12,14 +12,13 @@ using UnityEngine;
 
 namespace RandomEnemiesSize
 {
-    [BepInDependency(StaticNetcodeLib.StaticNetcodeLib.Guid)]
     [BepInDependency(Plugin.ModGUID, BepInDependency.DependencyFlags.SoftDependency)]
     [BepInPlugin(GUID, NAME, VERSION)]
     public class RandomEnemiesSize : BaseUnityPlugin
     {
         private const string GUID = "wexop.random_enemies_size_host_only";
         private const string NAME = "RandomEnemiesSizeHostOnly";
-        private const string VERSION = "1.0.0";
+        private const string VERSION = "1.0.1";
 
         public static string LethalLevelLoaderReferenceChain = "imabatby.lethallevelloader";
 
