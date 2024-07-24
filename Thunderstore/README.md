@@ -12,7 +12,7 @@ For more infos on configs, check the official mod. They work exactly like the of
 You can random size for **enemies**, modded included, **turrets**, **spike trap** and **landmine**.
 FunMode is working.
 
-### What I can't do with this mod ?
+## What I can't do with this mod ?
 
 Every influence are removed.
 RedLocustBees are disabled.
