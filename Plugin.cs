@@ -1,4 +1,5 @@
-﻿using System.Globalization;
+﻿using System.Collections.Generic;
+using System.Globalization;
 using BepInEx;
 using BepInEx.Bootstrap;
 using BepInEx.Configuration;
@@ -8,21 +9,24 @@ using LethalConfig.ConfigItems;
 using LethalConfig.ConfigItems.Options;
 using LethalLevelLoader;
 using RandomEnemiesSize.Patches;
+using Unity.Netcode;
 using UnityEngine;
 
 namespace RandomEnemiesSize
 {
     [BepInDependency(Plugin.ModGUID, BepInDependency.DependencyFlags.SoftDependency)]
     [BepInPlugin(GUID, NAME, VERSION)]
-    public class RandomEnemiesSize : BaseUnityPlugin
+    public class RandomEnemiesSizeHostOnly : BaseUnityPlugin
     {
         private const string GUID = "wexop.random_enemies_size_host_only";
         private const string NAME = "RandomEnemiesSizeHostOnly";
-        private const string VERSION = "1.0.1";
+        private const string VERSION = "1.0.2";
 
         public static string LethalLevelLoaderReferenceChain = "imabatby.lethallevelloader";
 
-        public static RandomEnemiesSize instance;
+        public List<NetworkObject> mapHazardsInLevel = new List<NetworkObject>();
+
+        public static RandomEnemiesSizeHostOnly instance;
         public bool LethalLevelLoaderIsHere;
         public ConfigEntry<bool> customAffectMineEntry;
         public ConfigEntry<bool> CustomAffectModEntry;

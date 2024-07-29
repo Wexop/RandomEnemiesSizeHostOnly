@@ -13,39 +13,41 @@ namespace RandomEnemiesSize.Patches
         {
             if (!__instance.IsServer || !__instance.IsOwner) return;
 
-            if (!RandomEnemiesSize.instance.customAffectSpikeTrapEntry.Value) return;
+            if (!RandomEnemiesSizeHostOnly.instance.customAffectSpikeTrapEntry.Value) return;
 
             //RANDOM PERCENT
 
             var randomPercent = Random.Range(0f, 100f);
 
-            if (RandomEnemiesSize.instance.randomPercentChanceEntry.Value < randomPercent)
+            if (RandomEnemiesSizeHostOnly.instance.randomPercentChanceEntry.Value < randomPercent)
             {
-                if (RandomEnemiesSize.instance.devLogEntry.Value)
+                if (RandomEnemiesSizeHostOnly.instance.devLogEntry.Value)
                     Debug.Log(
                         $"RANDOM PERCENT NOT RANDOM SIZE : {randomPercent} FOR ENEMY {__instance.gameObject.name}");
                 return;
             }
 
-            var scale = Random.Range(RandomEnemiesSize.instance.minSizeSpikeTrapEntry.Value,
-                RandomEnemiesSize.instance.maxSizeSpikeTrapEntry.Value);
+            var scale = Random.Range(RandomEnemiesSizeHostOnly.instance.minSizeSpikeTrapEntry.Value,
+                RandomEnemiesSizeHostOnly.instance.maxSizeSpikeTrapEntry.Value);
 
             var networkObject = __instance.gameObject.GetComponentInParent<NetworkObject>();
 
             var originalScale = new Vector3(1,0,1);
             var newScale = originalScale * scale;
 
-            if (RandomEnemiesSize.instance.funModeEntry.Value)
+            if (RandomEnemiesSizeHostOnly.instance.funModeEntry.Value)
             {
-                var funXSize = Random.Range(RandomEnemiesSize.instance.funModeHorizontalMinEntry.Value,
-                    RandomEnemiesSize.instance.funModeHorizontalMaxEntry.Value);
-                var funZSize = Random.Range(RandomEnemiesSize.instance.funModeHorizontalMinEntry.Value,
-                    RandomEnemiesSize.instance.funModeHorizontalMaxEntry.Value);
+                var funXSize = Random.Range(RandomEnemiesSizeHostOnly.instance.funModeHorizontalMinEntry.Value,
+                    RandomEnemiesSizeHostOnly.instance.funModeHorizontalMaxEntry.Value);
+                var funZSize = Random.Range(RandomEnemiesSizeHostOnly.instance.funModeHorizontalMinEntry.Value,
+                    RandomEnemiesSizeHostOnly.instance.funModeHorizontalMaxEntry.Value);
 
-                if (RandomEnemiesSize.instance.funModeLockHorizontalEnrty.Value) funZSize = funXSize;
+                if (RandomEnemiesSizeHostOnly.instance.funModeLockHorizontalEnrty.Value) funZSize = funXSize;
 
                 newScale = new Vector3(newScale.x * funXSize, newScale.y, newScale.z * funZSize);
             }
+            
+            RandomEnemiesSizeHostOnly.instance.mapHazardsInLevel.Add(__instance.NetworkObject);
 
             __instance.NetworkObject.SynchronizeTransform = true;
             __instance.gameObject.transform.parent.localScale = newScale;

@@ -28,7 +28,9 @@ namespace RandomEnemiesSize
             "Red Locust Bees",
             "Bunker Spider",
             "Earth Leviathan",
-            "Spring"
+            "Spring",
+            "Clay Surgeon",
+            "Bush Wolf",
         };
 
         public bool IsAVanillaEnemy(string name)
@@ -36,7 +38,7 @@ namespace RandomEnemiesSize
             var found = false;
 
             foreach (var vanilla in VanillaNames)
-                if (RandomEnemiesSize.instance.CompareEnemyName(name, vanilla))
+                if (RandomEnemiesSizeHostOnly.instance.CompareEnemyName(name, vanilla))
                     found = true;
 
             return found;

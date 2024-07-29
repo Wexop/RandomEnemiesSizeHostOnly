@@ -17,39 +17,39 @@ namespace RandomEnemiesSize.Patches
             
             if(__instance.enemyType.enemyName == "Red Locust Bees") return;
 
-            if (isVannila && !RandomEnemiesSize.instance.CustomAffectVanillaEntry.Value ||
-                !isVannila && !RandomEnemiesSize.instance.CustomAffectModEntry.Value) return;
+            if (isVannila && !RandomEnemiesSizeHostOnly.instance.CustomAffectVanillaEntry.Value ||
+                !isVannila && !RandomEnemiesSizeHostOnly.instance.CustomAffectModEntry.Value) return;
 
             //RANDOM PERCENT
             var randomPercent = Random.Range(0f, 100f);
 
-            if (RandomEnemiesSize.instance.randomPercentChanceEntry.Value < randomPercent)
+            if (RandomEnemiesSizeHostOnly.instance.randomPercentChanceEntry.Value < randomPercent)
             {
-                if (RandomEnemiesSize.instance.devLogEntry.Value)
+                if (RandomEnemiesSizeHostOnly.instance.devLogEntry.Value)
                     Debug.Log(
                         $"RANDOM PERCENT NOT RANDOM SIZE : {randomPercent} FOR ENEMY {__instance.gameObject.name}");
                 return;
             }
 
 
-            var scale = Random.Range(RandomEnemiesSize.instance.minSizeOutdoorEntry.Value,
-                RandomEnemiesSize.instance.maxSizeOutdoorEntry.Value);
+            var scale = Random.Range(RandomEnemiesSizeHostOnly.instance.minSizeOutdoorEntry.Value,
+                RandomEnemiesSizeHostOnly.instance.maxSizeOutdoorEntry.Value);
 
             if (!__instance.isOutside)
-                scale = Random.Range(RandomEnemiesSize.instance.minSizeIndoorEntry.Value,
-                    RandomEnemiesSize.instance.maxSizeIndoorEntry.Value);
+                scale = Random.Range(RandomEnemiesSizeHostOnly.instance.minSizeIndoorEntry.Value,
+                    RandomEnemiesSizeHostOnly.instance.maxSizeIndoorEntry.Value);
 
-            var customEnemy = RandomEnemiesSize.instance.GetCustomEnemySize(__instance.enemyType.enemyName);
+            var customEnemy = RandomEnemiesSizeHostOnly.instance.GetCustomEnemySize(__instance.enemyType.enemyName);
             if (customEnemy.found) scale = Random.Range(customEnemy.minValue, customEnemy.maxValue);
 
 
-            if (RandomEnemiesSize.instance.LethalLevelLoaderIsHere)
+            if (RandomEnemiesSizeHostOnly.instance.LethalLevelLoaderIsHere)
             {
-                var interiorName = RandomEnemiesSize.GetDungeonName();
+                var interiorName = RandomEnemiesSizeHostOnly.GetDungeonName();
                 //Debug.Log($"ACTUAL DUNGEON NAME {interiorName}");
                 if (!__instance.isOutside && interiorName != null)
                 {
-                    var interiorMult = RandomEnemiesSize.instance.GetInteriorMultiplier(__instance.enemyType.enemyName,
+                    var interiorMult = RandomEnemiesSizeHostOnly.instance.GetInteriorMultiplier(__instance.enemyType.enemyName,
                         interiorName);
                     //Debug.Log($"BEFORE INTERIOR MULT, SCALE IS {scale} AND MULT IS {interiorMult}");
                     scale *= interiorMult;
@@ -61,14 +61,14 @@ namespace RandomEnemiesSize.Patches
             var originalScale = __instance.gameObject.transform.localScale;
             var newScale = originalScale * scale;
 
-            if (RandomEnemiesSize.instance.funModeEntry.Value)
+            if (RandomEnemiesSizeHostOnly.instance.funModeEntry.Value)
             {
-                var funXSize = Random.Range(RandomEnemiesSize.instance.funModeHorizontalMinEntry.Value,
-                    RandomEnemiesSize.instance.funModeHorizontalMaxEntry.Value);
-                var funZSize = Random.Range(RandomEnemiesSize.instance.funModeHorizontalMinEntry.Value,
-                    RandomEnemiesSize.instance.funModeHorizontalMaxEntry.Value);
+                var funXSize = Random.Range(RandomEnemiesSizeHostOnly.instance.funModeHorizontalMinEntry.Value,
+                    RandomEnemiesSizeHostOnly.instance.funModeHorizontalMaxEntry.Value);
+                var funZSize = Random.Range(RandomEnemiesSizeHostOnly.instance.funModeHorizontalMinEntry.Value,
+                    RandomEnemiesSizeHostOnly.instance.funModeHorizontalMaxEntry.Value);
 
-                if (RandomEnemiesSize.instance.funModeLockHorizontalEnrty.Value) funZSize = funXSize;
+                if (RandomEnemiesSizeHostOnly.instance.funModeLockHorizontalEnrty.Value) funZSize = funXSize;
 
                 newScale = new Vector3(newScale.x * funXSize, newScale.y, newScale.z * funZSize);
             }
@@ -80,7 +80,7 @@ namespace RandomEnemiesSize.Patches
             
 
 
-            if (RandomEnemiesSize.instance.devLogEntry.Value)
+            if (RandomEnemiesSizeHostOnly.instance.devLogEntry.Value)
                 Debug.Log($"ENEMY ({__instance.gameObject.name}) SPAWNED WITH RANDOM SIZE {newScale.ToString()}");
         }
     }
