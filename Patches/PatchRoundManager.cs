@@ -1,4 +1,5 @@
 ﻿using HarmonyLib;
+using UnityEngine;
 
 namespace RandomEnemiesSize.Patches;
 
@@ -11,6 +12,7 @@ public class PatchRoundManager
     {
         foreach (var networkObject in RandomEnemiesSizeHostOnly.instance.mapHazardsInLevel)
         {
+            Debug.Log($"NETWORK OBJECT DESPAWNING {networkObject.name}");
             networkObject.Despawn();
         }
 

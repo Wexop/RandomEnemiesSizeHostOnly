@@ -48,9 +48,8 @@ namespace RandomEnemiesSize.Patches
             }
             
             RandomEnemiesSizeHostOnly.instance.mapHazardsInLevel.Add(__instance.NetworkObject);
-
-            __instance.NetworkObject.SynchronizeTransform = true;
-            __instance.gameObject.transform.parent.localScale = newScale;
+            
+            __instance.NetworkObject.transform.localScale = newScale;
             __instance.NetworkObject.Despawn(false);
             //change size
 
